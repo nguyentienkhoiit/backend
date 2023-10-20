@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class Constants {
     public static final String HOST = "http://localhost:8080";
-    public static final String HOST_SERVER = "D:/SEP490/backend/resource";
+    public static final String HOST_SERVER = "https://github.com/nguyentienkhoiit/backend/tree/main/resource";
     public static final String API_VERSION = "/api/v1";
     public static final Long DEFAULT_PAGE_SIZE = 9L;
     public static final Long DEFAULT_PAGE_INDEX = 1L;
