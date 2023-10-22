@@ -56,7 +56,7 @@ public class BookSeriesController {
     }
 
     @Operation(summary = "Search Book series")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchBookSeries(@ModelAttribute BookSeriesDTOFilter bookSeriesDTOFilter) {
         return bookSeriesService.searchBookSeries(bookSeriesDTOFilter);
     }

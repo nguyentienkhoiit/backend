@@ -58,7 +58,7 @@ public class SubjectController {
     }
 
     @Operation(summary = "Search Subject")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchSubject(@ModelAttribute SubjectDTOFilter subjectDTOFilter) {
         return subjectService.searchSubject(subjectDTOFilter);
     }

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -36,7 +38,7 @@ public class SystemPermissionServiceImpl implements SystemPermissionService {
         SystemPermission systemPermission = systemPermissionRepository.findById(id)
                 .orElseThrow(() ->
                         ApiException
-                                .notFoundException(messageException.MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND)
+                                .notFoundException(messageException.MSG_SYSTEM_PERMISSION_NOT_FOUND)
                 );
         return SystemPermissionMapper
                 .toSystemPermissionDTOResponse(
@@ -52,7 +54,7 @@ public class SystemPermissionServiceImpl implements SystemPermissionService {
         if (systemPermissionDTORequest.getDependencyPermissionId() != null) {
             systemPermissionRoot = systemPermissionRepository
                     .findById(systemPermissionDTORequest.getDependencyPermissionId())
-                    .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND));
+                    .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_SYSTEM_PERMISSION_NOT_FOUND));
         }
         SystemPermission systemPermission = SystemPermissionMapper
                 .toSystemPermission(systemPermissionDTORequest);
@@ -74,12 +76,12 @@ public class SystemPermissionServiceImpl implements SystemPermissionService {
         if (systemPermissionDTOUpdate.getDependencyPermissionId() != null) {
             systemPermissionRoot = systemPermissionRepository
                     .findById(systemPermissionDTOUpdate.getDependencyPermissionId())
-                    .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND));
+                    .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_SYSTEM_PERMISSION_NOT_FOUND));
         }
 
         SystemPermission systemPermissionDb = systemPermissionRepository
                 .findById(systemPermissionDTOUpdate.getPermissionId())
-                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND));
+                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_SYSTEM_PERMISSION_NOT_FOUND));
 
         SystemPermission systemPermission = SystemPermissionMapper
                 .toSystemPermission(systemPermissionDTOUpdate);
@@ -101,10 +103,19 @@ public class SystemPermissionServiceImpl implements SystemPermissionService {
     public Boolean changeStatus(Boolean active, Long id) {
         SystemPermission systemPermission = systemPermissionRepository
                 .findById(id)
-                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND));
+                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_SYSTEM_PERMISSION_NOT_FOUND));
 //        active = !active;
         systemPermission.setActive(active);
         systemPermissionRepository.save(systemPermission);
         return true;
+    }
+
+    @Override
+    public List<PermissionDTODisplay> getAllSystemPermissions() {
+        List<SystemPermission> systemPermissions = systemPermissionRepository
+                .findAllByActiveTrue();
+        return systemPermissions.stream()
+                .map(SystemPermissionMapper::toPermissionDTODisplay)
+                .toList();
     }
 }

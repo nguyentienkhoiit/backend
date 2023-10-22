@@ -30,10 +30,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 @Server(
                         description = "EMSS",
                         url = "http://localhost:8080"
-                ),
-                @Server(
-                        description = "EMSS",
-                        url = "https://backend-production-9cfa.up.railway.app"
                 )
         },
         security = {

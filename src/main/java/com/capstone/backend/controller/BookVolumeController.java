@@ -60,7 +60,7 @@ public class BookVolumeController {
     }
 
     @Operation(summary = "Search BookVolume")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchBookVolume(@ModelAttribute BookVolumeDTOFilter bookVolumeDTOFilter) {
         return bookVolumeService.searchBookVolume(bookVolumeDTOFilter);
     }

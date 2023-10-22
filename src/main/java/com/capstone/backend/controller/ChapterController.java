@@ -55,7 +55,7 @@ public class ChapterController {
     }
 
     @Operation(summary = "Search Chapter")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchChapter(@ModelAttribute ChapterDTOFilter chapterDTOFilter) {
         return chapterService.searchChapter(chapterDTOFilter);
     }

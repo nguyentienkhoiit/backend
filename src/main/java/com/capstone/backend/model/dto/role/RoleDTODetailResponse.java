@@ -12,12 +12,14 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleDTOResponse {
+public class RoleDTODetailResponse {
     Long roleId;
     String roleName;
     String description;
     LocalDateTime createdAt;
     Boolean active;
     String creator;
+    List<PermissionDTOResponse> permissions;
 }

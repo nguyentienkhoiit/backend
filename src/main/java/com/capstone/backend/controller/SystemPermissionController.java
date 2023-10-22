@@ -21,11 +21,16 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 public class SystemPermissionController {
     SystemPermissionService systemPermissionService;
 
-    @GetMapping("/list")
+    @GetMapping("/display")
     public ResponseEntity<?> viewSearchPermission(
             @ModelAttribute SystemPermissionDTOFilter request
     ) {
         return ResponseEntity.ok(systemPermissionService.viewSearchPermission(request));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getAllSystemPermissions() {
+        return ResponseEntity.ok(systemPermissionService.getAllSystemPermissions());
     }
 
     @GetMapping("/{id}")

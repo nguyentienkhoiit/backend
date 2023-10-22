@@ -58,7 +58,7 @@ public class ClassController {
     }
 
     @Operation(summary = "Search Class")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchClass(@ModelAttribute ClassDTOFilter classDTOFilter) {
         return classService.searchClass(classDTOFilter);
     }

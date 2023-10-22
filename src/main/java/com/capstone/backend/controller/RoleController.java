@@ -1,11 +1,15 @@
 package com.capstone.backend.controller;
 
+import com.capstone.backend.model.dto.role.RoleDTOFilter;
+import com.capstone.backend.model.dto.role.RoleDTORequest;
+import com.capstone.backend.model.dto.role.RoleDTOUpdate;
+import com.capstone.backend.service.RoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
@@ -15,6 +19,31 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @RequestMapping(API_VERSION + "/role")
 @Tag(name = "Role", description = "API for role")
 public class RoleController {
+    RoleService roleService;
 
-//    public ResponseEntity<?> createRole()
+    @GetMapping("/display")
+    public ResponseEntity<?> viewSearchRole(@ModelAttribute RoleDTOFilter request) {
+        return ResponseEntity.ok(roleService.viewSearchRole(request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getRoleById(@PathVariable Long id) {
+        return ResponseEntity.ok(roleService.getRoleById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createRole(@RequestBody RoleDTORequest request) {
+        return ResponseEntity.ok(roleService.createRole(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> UpdateRole(@PathVariable Long id, @RequestBody RoleDTOUpdate request) {
+        request.setRoleId(id);
+        return ResponseEntity.ok(roleService.updateRole(request));
+    }
+
+    @GetMapping("/status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestParam(name = "active") Boolean active) {
+        return ResponseEntity.ok(roleService.changeStatus(active, id));
+    }
 }

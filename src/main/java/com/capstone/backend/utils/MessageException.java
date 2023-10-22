@@ -137,6 +137,6 @@ public class MessageException {
 
     //-------------- system permission --------------
     @Value("${messages.exception.system-permission-not-found}")
-    public String MSG_BOOK_SYSTEM_PERMISSION_NOT_FOUND;
+    public String MSG_SYSTEM_PERMISSION_NOT_FOUND;
 
 }

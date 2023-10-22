@@ -55,7 +55,7 @@ public class LessonController {
     }
 
     @Operation(summary = "Search Lesson")
-    @GetMapping("/list")
+    @GetMapping("/display")
     public PagingDTOResponse searchLesson(@ModelAttribute LessonDTOFilter lessonDTOFilter) {
         return lessonService.searchLesson(lessonDTOFilter);
     }

@@ -1,0 +1,50 @@
+### Get system-permission by id
+GET {{localhost}}/system-permission/63
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### Get all system-permission
+GET {{localhost}}/system-permission/list
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### View search system permission
+GET {{localhost}}/system-permission/display?
+    name=book&
+    pageIndex=1&
+    pageSize=9&
+    active=true
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### Change status system-permission
+GET {{localhost}}/system-permission/status/65?
+    active=true
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### Create system-permission
+POST {{localhost}}/system-permission
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "permissionName": "a",
+  "path": "/api/v1/aaa",
+  "methodType": "GET",
+  "description": "demo"
+}
+
+### Update system-permission
+POST {{localhost}}/system-permission/66
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "permissionName": "a",
+  "path": "/api/v1/aaa",
+  "methodType": "GET",
+  "description": "demo"
+}
+
+

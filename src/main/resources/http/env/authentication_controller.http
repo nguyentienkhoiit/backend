@@ -1,0 +1,44 @@
+### Login
+POST {{localhost}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin",
+  "password": "aA12345678"
+}
+
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+### Forgot password
+POST {{localhost}}/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "nguyentienkhoi.it@gmail.com"
+}
+
+### Submit forgot password
+POST {{localhost}}/auth/submit-forgot-password
+Content-Type: application/json
+
+{
+  "token": "2ce6612b-fc19-4e8c-9f65-79ec54a6d9ea",
+  "newPassword": "aA12345678",
+  "confirmationPassword": "aA12345678"
+}
+
+
+### Go to forgot password
+GET {{localhost}}/auth/confirm?
+    token=2ce6612b-fc19-4e8c-9f65-79ec54a6d9ea
+Content-Type: application/json
+
+{
+  "email": "nguyentienkhoi.it@gmail.com"
+}
+
+
+
+

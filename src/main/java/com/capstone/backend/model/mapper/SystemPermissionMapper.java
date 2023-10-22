@@ -1,16 +1,17 @@
 package com.capstone.backend.model.mapper;
 
+import com.capstone.backend.entity.Role;
 import com.capstone.backend.entity.SystemPermission;
-import com.capstone.backend.model.dto.systempermission.SystemPermissionDTORequest;
-import com.capstone.backend.model.dto.systempermission.SystemPermissionDTOResponse;
-import com.capstone.backend.model.dto.systempermission.SystemPermissionDTOUpdate;
+import com.capstone.backend.entity.UserRolePermission;
+import com.capstone.backend.model.dto.role.RoleDTODetailResponse;
+import com.capstone.backend.model.dto.systempermission.*;
 
 import java.time.LocalDateTime;
 
 public class SystemPermissionMapper {
     public static SystemPermissionDTOResponse toSystemPermissionDTOResponse(SystemPermission systemPermission, String creator) {
         Long dependencyPermissionId = null;
-        if(systemPermission.getSystemPermissionRoot() != null) {
+        if (systemPermission.getSystemPermissionRoot() != null) {
             dependencyPermissionId = systemPermission.getSystemPermissionRoot().getId();
         }
         return SystemPermissionDTOResponse.builder()
@@ -46,6 +47,29 @@ public class SystemPermissionMapper {
                 .methodType(systemPermissionDTOUpdate.getMethodType())
                 .path(systemPermissionDTOUpdate.getPath())
                 .systemPermissionRoot(null)
+                .build();
+    }
+
+    public static PermissionDTOResponse toPermissionDTOResponse(SystemPermission permission) {
+        return PermissionDTOResponse.builder()
+                .permissionId(permission.getId())
+                .permissionName(permission.getName())
+                .build();
+    }
+
+    public static PermissionDTODisplay toPermissionDTODisplay(SystemPermission permission) {
+        return PermissionDTODisplay.builder()
+                .permissionId(permission.getId())
+                .permissionName(permission.getName()+" ( "+permission.getDescription()+" ) ")
+                .build();
+    }
+
+    public static UserRolePermission toUserRolePermission(SystemPermission systemPermission, Role role) {
+        return UserRolePermission.builder()
+                .active(true)
+                .createdAt(LocalDateTime.now())
+                .permission(systemPermission)
+                .role(role)
                 .build();
     }
 }

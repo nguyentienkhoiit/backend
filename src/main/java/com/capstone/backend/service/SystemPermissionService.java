@@ -1,6 +1,9 @@
 package com.capstone.backend.service;
 
+import com.capstone.backend.entity.SystemPermission;
 import com.capstone.backend.model.dto.systempermission.*;
+
+import java.util.List;
 
 public interface SystemPermissionService {
     public PagingSystemPermissionDTOResponse viewSearchPermission(SystemPermissionDTOFilter request);
@@ -12,4 +15,6 @@ public interface SystemPermissionService {
     public SystemPermissionDTOResponse updateSystemPermission(SystemPermissionDTOUpdate systemPermissionDTOUpdate);
 
     public Boolean changeStatus(Boolean active, Long id);
+
+    public List<PermissionDTODisplay> getAllSystemPermissions();
 }

@@ -1,0 +1,4 @@
+### Search material
+GET {{localhost}}/resource/materials
+Content-Type: application/json
+Authorization: Bearer {{access_token}}

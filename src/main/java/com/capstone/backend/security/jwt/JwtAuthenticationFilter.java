@@ -1,7 +1,7 @@
 package com.capstone.backend.security.jwt;
 
 import com.capstone.backend.entity.type.MethodType;
-import com.capstone.backend.exception.ApiException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.capstone.backend.model.CustomError;
 import com.capstone.backend.repository.UserRolePermissionRepository;
 import com.capstone.backend.utils.Constants;
