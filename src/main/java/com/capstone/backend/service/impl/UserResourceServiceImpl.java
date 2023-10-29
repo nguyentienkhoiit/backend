@@ -5,10 +5,14 @@ import com.capstone.backend.entity.User;
 import com.capstone.backend.entity.UserResource;
 import com.capstone.backend.entity.type.ActionType;
 import com.capstone.backend.exception.ApiException;
+import com.capstone.backend.model.dto.userresource.MyUserResourceDTOFilter;
+import com.capstone.backend.model.dto.userresource.PagingUserResourceDTOResponse;
 import com.capstone.backend.model.dto.userresource.UserResourceRequest;
+import com.capstone.backend.model.dto.userresource.UserResourceSavedOrSharedDTOFilter;
 import com.capstone.backend.repository.ResourceRepository;
 import com.capstone.backend.repository.UserRepository;
 import com.capstone.backend.repository.UserResourceRepository;
+import com.capstone.backend.repository.criteria.UserResourceCriteria;
 import com.capstone.backend.service.FileService;
 import com.capstone.backend.service.UserResourceService;
 import com.capstone.backend.utils.MessageException;
@@ -30,6 +34,7 @@ public class UserResourceServiceImpl implements UserResourceService {
     UserHelper userHelper;
     UserRepository userRepository;
     MessageException messageException;
+    UserResourceCriteria userResourceCriteria;
 
     private void findAndDeleteUserResourceExist(User userLoggedIn, Long resourceId, ActionType actionType) {
         userResourceRepository.findUserResourceHasActionType(
@@ -77,24 +82,32 @@ public class UserResourceServiceImpl implements UserResourceService {
     }
 
     @Override
-    public org.springframework.core.io.Resource downloadResource(String fileName) {
-        Resource document = resourceRepository.findByName(fileName)
-                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_RESOURCE_NOT_FOUND));
+    public PagingUserResourceDTOResponse viewSearchUserResourceSaved(UserResourceSavedOrSharedDTOFilter request) {
+        return userResourceCriteria.viewSearchUserSavedResource(request);
+    }
 
-        User userLoggedIn = userHelper.getUserLogin();
-        org.springframework.core.io.Resource resource;
-        long pointRemain = userLoggedIn.getTotalPoint() - document.getPoint();
-        if (pointRemain > 0) {
-            resource = fileService.downloadFile(fileName);
-            userLoggedIn.setTotalPoint(pointRemain);
-            userRepository.save(userLoggedIn);
-        } else throw ApiException.forBiddenException(messageException.MSG_FILE_DOWNLOAD_ERROR);
+    @Override
+    public PagingUserResourceDTOResponse viewSearchUserResourceShared(UserResourceSavedOrSharedDTOFilter request) {
+        return userResourceCriteria.viewSearchUserResourceShared(request);
+    }
 
-        boolean action = actionResource(UserResourceRequest.builder()
-                .actionType(String.valueOf(ActionType.DOWNLOAD))
-                .resourceId(document.getId())
-                .build());
-        if (!action) throw ApiException.badRequestException(messageException.MSG_INTERNAL_SERVER_ERROR);
-        return resource;
+    @Override
+    public PagingUserResourceDTOResponse viewSearchMyUserResource(MyUserResourceDTOFilter request) {
+        return userResourceCriteria.viewSearchMyUserResource(request);
+    }
+
+    @Override
+    public Boolean deleteSavedResource(Long id) {
+        User user = userHelper.getUserLogin();
+        UserResource userResource = userResourceRepository
+                .findUserResourceHasActionType(user.getId(), id, ActionType.SAVED)
+                .orElseThrow(() -> ApiException.notFoundException(messageException.MSG_USER_RESOURCE_NOT_FOUND));
+        userResourceRepository.deleteUserResourceHasActionType(user.getId(), id, ActionType.SAVED);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteSharedResource(Long id) {
+        return null;
     }
 }

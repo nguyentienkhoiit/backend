@@ -1,11 +1,12 @@
 package com.capstone.backend.model.dto.bookseries;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class BookSeriesDTORequest {
     String name;
 
     @Schema(description = "Class id is mandatory", example = "1")
-    @NotNull(message = "Class id is mandatory")
+    @NotNull (message = "Class id is mandatory")
     Long classId;
 
 }

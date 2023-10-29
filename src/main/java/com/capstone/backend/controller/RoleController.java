@@ -18,6 +18,7 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping(API_VERSION + "/role")
 @Tag(name = "Role", description = "API for role")
+@CrossOrigin
 public class RoleController {
     RoleService roleService;
 

@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/profile")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(name = "Profile", description = "API for Profile")
+@CrossOrigin
 public class ProfileController {
     UserService userService;
 

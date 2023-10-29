@@ -6,21 +6,22 @@ import com.capstone.backend.service.AuthenticationService;
 import com.capstone.backend.service.ConfirmationTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/register")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(name = "Registration", description = "API for Registration")
+@CrossOrigin
 public class RegistrationController {
     ConfirmationTokenService confirmationTokenService;
     AuthenticationService authenticationService;

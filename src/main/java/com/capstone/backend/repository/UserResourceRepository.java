@@ -21,6 +21,4 @@ public interface UserResourceRepository extends JpaRepository<UserResource, Long
 
     @Query("select count(ur) from UserResource ur where ur.actionType = :actionType and ur.resource.id = :resourceId")
     public Long countByActionTypeWithResource(ActionType actionType, Long resourceId);
-
-    public Optional<UserResource> findUserResourceByUserIdAndResourceIdAndActionType(Long userId, Long resourceId, ActionType actionType);
 }

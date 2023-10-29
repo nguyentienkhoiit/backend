@@ -3,10 +3,7 @@ package com.capstone.backend.model.mapper;
 import com.capstone.backend.entity.*;
 import com.capstone.backend.entity.Class;
 import com.capstone.backend.entity.type.ActionType;
-import com.capstone.backend.model.dto.resource.ResourceDTOResponse;
-import com.capstone.backend.model.dto.resource.ResourceDTOUpdateResponse;
-import com.capstone.backend.model.dto.resource.ResourceMediaDTOCriteria;
-import com.capstone.backend.model.dto.resource.ResourceViewDTOResponse;
+import com.capstone.backend.model.dto.resource.*;
 import com.capstone.backend.repository.UserResourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -76,6 +73,15 @@ public class ResourceMapper {
                 .description(resource.getDescription())
                 .createdAt(resource.getCreatedAt())
                 .point(resource.getPoint())
+                .build();
+    }
+
+    public static UserSharedDTOResponse toUserSharedDTOResponse(User user, String permission) {
+        return UserSharedDTOResponse.builder()
+                .userShareId(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .permission(permission)
                 .build();
     }
 }

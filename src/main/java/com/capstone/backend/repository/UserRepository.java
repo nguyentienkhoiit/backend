@@ -1,7 +1,6 @@
 package com.capstone.backend.repository;
 
 import com.capstone.backend.entity.User;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     public Optional<User> findByPhone(String phone);
 
-
-    @Transactional
     @Modifying
     @Query("UPDATE User a " +
             "SET a.active = TRUE WHERE a.email = ?1")

@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/users")
 @Tag(name = "User", description = "API for User")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class UserController {
     UserService userService;
     @PatchMapping("/change-password")

@@ -1,50 +1,35 @@
 package com.capstone.backend.configuration;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@OpenAPIDefinition(
-        info = @Info(
-                contact = @Contact(
-                        name = "Visssoft",
-                        email = "visssoft@gmail.com",
-                        url = "https://visssoft.com/"
-                ),
-                description = "Educational Material Sharing System",
-                title = "OpenApi specification - EMSS",
-                version = "1.0",
-                license = @License(
-                        name = "Apache 2.0",
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.html"
-                ),
-                termsOfService = "Terms of service"
-        ),
-        servers = {
-                @Server(
-                        description = "EMSS",
-                        url = "http://localhost:8080"
-                )
-        },
-        security = {
-                @SecurityRequirement(
-                        name = "bearerAuth"
-                )
-        }
-)
-@SecurityScheme(
-        name = "bearerAuth",
-        description = "JWT auth description",
-        scheme = "bearer",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        in = SecuritySchemeIn.HEADER
-)
+import java.util.ArrayList;
+import java.util.List;
+
+@Configuration
 public class OpenApiConfiguration {
+    @Bean
+    public OpenAPI customOpenAPI() {
+        List<Server> serverList = new ArrayList<>();
+        serverList.add(new Server().url("http://localhost:8080"));
+//        serverList.add(new Server().url("https://visssoft.com/"));
+        return new OpenAPI()
+                .servers(serverList)
+                // info
+                .info(new Info().title("Educational Material Sharing System API")
+                        .description("Sample OpenAPI 3.0")
+                        .contact(new Contact()
+                                .email("nguyentienkhoi.it@gmail.com")
+                                .name("Educational Material Sharing System")
+                                .url("http://localhost:8080"))
+                        .license(new License()
+                                .name("Apache 2.0")
+                                .url("http://localhost:8080"))
+                        .version("1.0.0"));
+    }
 }

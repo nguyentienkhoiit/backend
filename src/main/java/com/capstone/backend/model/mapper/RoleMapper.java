@@ -3,10 +3,7 @@ package com.capstone.backend.model.mapper;
 import com.capstone.backend.entity.Role;
 import com.capstone.backend.entity.SystemPermission;
 import com.capstone.backend.entity.User;
-import com.capstone.backend.model.dto.role.RoleDTODetailResponse;
-import com.capstone.backend.model.dto.role.RoleDTORequest;
-import com.capstone.backend.model.dto.role.RoleDTOResponse;
-import com.capstone.backend.model.dto.role.RoleDTOUpdate;
+import com.capstone.backend.model.dto.role.*;
 import com.capstone.backend.model.dto.systempermission.PermissionDTOResponse;
 
 import java.time.LocalDateTime;
@@ -60,6 +57,13 @@ public class RoleMapper {
                 .name(request.getRoleName())
                 .description(request.getDescription())
                 .userId(userLoggedIn.getId())
+                .build();
+    }
+
+    public static RoleDTODisplay toRoleDTODisplay(Role role) {
+        return RoleDTODisplay.builder()
+                .roleId(role.getId())
+                .roleName(role.getName())
                 .build();
     }
 }

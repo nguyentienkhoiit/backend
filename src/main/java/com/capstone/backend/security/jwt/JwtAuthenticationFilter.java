@@ -1,20 +1,16 @@
 package com.capstone.backend.security.jwt;
 
 import com.capstone.backend.entity.type.MethodType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.capstone.backend.model.CustomError;
 import com.capstone.backend.repository.UserRolePermissionRepository;
 import com.capstone.backend.utils.Constants;
 import com.capstone.backend.utils.MessageException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,8 +22,14 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +38,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     JwtService jwtService;
     UserDetailsService userDetailsService;
@@ -48,28 +51,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        //get url from link api
         String url = request.getRequestURI();
-        if (isPermissionApi(url)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        log.info("Method: {}", request.getMethod().toUpperCase());
         var data = new Object() {
             final String path = getPath(url);
             final MethodType methodType = MethodType.valueOf(request.getMethod().toUpperCase());
         };
-        System.out.println("path: "+data.path);
 
+        log.info("Path: {}, method: {}", data.path, request.getMethod());
+
+        //check token exist from header
         final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String username;
+
+        log.info("AuthHeader: {}", authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            responseToClient(response, messageException.MSG_BEARER_NOT_FOUND);
+            //permit all api
+            if (isPermissionApi(data.path)) {
+                filterChain.doFilter(request, response);
+            } else responseToClient(response, messageException.MSG_BEARER_NOT_FOUND);
             return;
         }
-        jwt = authHeader.split(" ")[1].trim();
-        String[] roles = jwtService.getRolesFromToken(jwt);
 
+        //get role from jwt
+        String[] roles;
+        jwt = authHeader.split(" ")[1].trim();
+        try {
+            roles = jwtService.getRolesFromToken(jwt);
+        } catch (Exception ex) {
+            responseToClient(response, messageException.MSG_TOKEN_EXPIRED);
+            return;
+        }
+        //check permission by role from database
         boolean isPermission = Arrays.stream(roles).anyMatch(role -> {
+            log.info("role: {}", role);
             return (userRolePermissionRepository.needCheckPermission(data.path, data.methodType, role) != null);
         });
 
@@ -78,6 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        //save SecurityContextHolder
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -95,8 +113,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-            else {
+            } else {
                 responseToClient(response, messageException.MSG_TOKEN_INVALID);
                 return;
             }
@@ -106,7 +123,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public boolean isPermissionApi(String url) {
         return Arrays.stream(Constants.LIST_PERMIT_ALL)
-                .anyMatch(o -> url.contains(o.replace("*", "")));
+                .anyMatch(o -> {
+                    String urlOriginal = o.replace("*", "");
+                    urlOriginal = urlOriginal.endsWith("/") ?
+                            urlOriginal.substring(0, urlOriginal.length() - 1) : urlOriginal;
+                    return url.contains(urlOriginal);
+                });
     }
 
     public String getPath(String path) {
@@ -114,7 +136,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String uri = path.substring(index);
         Pattern pattern = Pattern.compile("-?\\d+");
         Matcher matcher = pattern.matcher(uri);
-        if(matcher.find()) {
+        if (matcher.find()) {
             path = path.replace(uri, "");
         }
         return path;

@@ -5,14 +5,14 @@ import com.capstone.backend.model.dto.tag.PagingTagDTOResponse;
 import com.capstone.backend.model.dto.tag.TagDTOFilter;
 import com.capstone.backend.model.dto.tag.TagDTOResponse;
 import com.capstone.backend.model.mapper.TagMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -5,5 +5,6 @@ public enum MethodType {
     POST,
     PUT,
     DELETE,
-    PATCH
+    PATCH,
+    OPTIONS
 }

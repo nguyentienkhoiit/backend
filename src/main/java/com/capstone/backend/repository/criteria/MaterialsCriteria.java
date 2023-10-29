@@ -1,25 +1,27 @@
 package com.capstone.backend.repository.criteria;
 
-import com.capstone.backend.entity.*;
 import com.capstone.backend.entity.Class;
-import com.capstone.backend.entity.type.ActionType;
-import com.capstone.backend.entity.type.TabResourceType;
-import com.capstone.backend.model.dto.materials.*;
+import com.capstone.backend.entity.*;
+import com.capstone.backend.entity.type.*;
+import com.capstone.backend.model.dto.materials.DataMaterialsDTOResponse;
+import com.capstone.backend.model.dto.materials.MaterialsFilterDTORequest;
+import com.capstone.backend.model.dto.materials.PagingMaterialDTOResponse;
 import com.capstone.backend.model.dto.resource.ResourceViewDTOResponse;
 import com.capstone.backend.model.mapper.MaterialsMapper;
 import com.capstone.backend.model.mapper.ResourceMapper;
 import com.capstone.backend.repository.*;
+import com.capstone.backend.utils.CheckPermissionResource;
 import com.capstone.backend.utils.Constants;
 import com.capstone.backend.utils.MessageException;
 import com.capstone.backend.utils.UserHelper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +42,10 @@ public class MaterialsCriteria {
     MessageException messageException;
     UserResourceRepository userResourceRepository;
     ResourceRepository resourceRepository;
+    CheckPermissionResource checkPermissionResource;
 
     public DataMaterialsDTOResponse searchMaterials(MaterialsFilterDTORequest request) {
+        User userLoggedIn = userHelper.getUserLogin();
         StringBuilder sql = new StringBuilder("select re from Resource re left join re.lesson le left join" +
                 " le.chapter cha left join cha.bookVolume bv left join bv.subject su left join" +
                 " su.bookSeries bs left join bs.classObject c where 1 = 1");
@@ -65,7 +69,6 @@ public class MaterialsCriteria {
         };
 
         if (request.getClassId() != null) {
-            System.out.println("here");
             data.classCurrent = classRepository
                     .findByIdAndActiveTrue(request.getClassId())
                     .orElseGet(() -> data.classCurrent);
@@ -119,6 +122,12 @@ public class MaterialsCriteria {
         sql.append(" and re.tabResourceType = :tabResourceType");
         params.put("tabResourceType", data.tabResourceType);
 
+        sql.append(" and re.approveType = :approveType ");
+        params.put("approveType", ApproveType.ACCEPTED);
+
+        sql.append(" and re.visualType = :visualType ");
+        params.put("visualType", VisualType.PUBLIC);
+
         sql.append(" order by re.createdAt ");
 
         data.pageIndex = request.getPageIndex() != null ? request.getPageIndex() : data.pageIndex;
@@ -136,7 +145,9 @@ public class MaterialsCriteria {
 
         resourceTypedQuery.setFirstResult((int) ((data.pageIndex - 1) * data.pageSize));
         resourceTypedQuery.setMaxResults(Math.toIntExact(data.pageSize));
-        List<Resource> resourceList = resourceTypedQuery.getResultList();
+        List<Resource> resourceList = resourceTypedQuery.getResultList().stream()
+                .filter(r -> checkPermissionResource.needCheckPermissionResource(userLoggedIn, r, PermissionResourceType.V))
+                .toList();
 
         data.totalResource = (Long) countQuery.getSingleResult();
         data.totalPage = data.totalResource / data.pageSize;
@@ -144,16 +155,13 @@ public class MaterialsCriteria {
             data.totalPage++;
         }
 
-        User userLoggedIn = userHelper.getUserLogin();
         List<ResourceViewDTOResponse> resourceViewDTOResponses = resourceList.stream()
                 .map(resource -> {
-                    boolean isSave = userResourceRepository
-                            .findUserResourceByUserIdAndResourceIdAndActionType(
-                                    userLoggedIn.getId(),
-                                    resource.getId(),
-                                    ActionType.SAVED
-                            )
-                            .isPresent();
+                    boolean isSave = false;
+                    if(userLoggedIn != null)
+                        isSave = userResourceRepository
+                                .findUserResourceHasActionType(userLoggedIn.getId(), resource.getId(), ActionType.SAVED)
+                                .isPresent();
                     return ResourceMapper.toResourceViewDTOResponse(resource, isSave);
                 })
                 .toList();

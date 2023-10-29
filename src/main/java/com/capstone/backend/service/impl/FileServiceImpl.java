@@ -62,9 +62,11 @@ public class FileServiceImpl implements FileService {
 
     public FileDTOResponse uploadSingleFile(
             MultipartFile multipartFile,
-            String fileName
+            String fileName,
+            Long lessonId
     ) {
         init();
+        String messageError = messageException.MSG_FILE_SAVE_ERROR;
         try {
             //get file name extension defined
             String fileNameExtensionList = Arrays.toString(ResourceType.values()).toLowerCase();
@@ -77,8 +79,14 @@ public class FileServiceImpl implements FileService {
             //get file name extension from file
             String fileNameExtension = fileNameArray[fileNameArray.length - 1];
 
+            if(lessonId == null && ResourceType.getResourceByLesson().toString().contains(fileNameExtension.toUpperCase())) {
+                messageError = messageException.MSG_FILE_TYPE_INVALID;
+                throw ApiException.badRequestException(messageException.MSG_FILE_TYPE_INVALID);
+            }
+
             //only file name extension defined before
             if (!fileNameExtensionList.contains(fileNameExtension)) {
+                messageError = messageException.MSG_FILE_TYPE_INVALID;
                 throw ApiException.badRequestException(messageException
                         .MSG_FILE_TYPE_INVALID
                         .concat(" ")
@@ -121,12 +129,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileDTOResponse> uploadMultiFile(MultipartFile[] files) {
+    public List<FileDTOResponse> uploadMultiFile(MultipartFile[] files, Long lessonId) {
         List<FileDTOResponse> fileDTOResponseList = new ArrayList<>();
         try {
             Arrays.asList(files).forEach(file -> {
                 String uuid = UUID.randomUUID().toString();
-                FileDTOResponse fileDTOResponse = uploadSingleFile(file, uuid);
+                FileDTOResponse fileDTOResponse = uploadSingleFile(file, uuid, lessonId);
                 fileDTOResponseList.add(fileDTOResponse);
             });
             return fileDTOResponseList;

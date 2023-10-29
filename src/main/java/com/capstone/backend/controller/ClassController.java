@@ -5,31 +5,26 @@ import com.capstone.backend.model.dto.PagingDTOResponse;
 import com.capstone.backend.model.dto.classes.ClassDTOFilter;
 import com.capstone.backend.model.dto.classes.ClassDTORequest;
 import com.capstone.backend.model.dto.classes.ClassDTOResponse;
-import com.capstone.backend.model.dto.tag.PagingTagDTOResponse;
 import com.capstone.backend.service.ClassService;
-import com.capstone.backend.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/class")
 @Tag(name = "Class", description = "API for Class")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class ClassController {
 
 

@@ -3,10 +3,11 @@ package com.capstone.backend.model.dto.resourcetag;
 import com.capstone.backend.entity.Resource;
 import com.capstone.backend.entity.type.TableType;
 import com.capstone.backend.model.dto.tag.TagDTOResponse;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @AllArgsConstructor
 @NoArgsConstructor

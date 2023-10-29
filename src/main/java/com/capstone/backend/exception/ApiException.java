@@ -23,7 +23,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("404")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }
@@ -33,7 +32,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("400")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }
@@ -43,7 +41,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("500")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }
@@ -53,7 +50,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("403")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }
@@ -63,7 +59,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("401")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }
@@ -73,7 +68,6 @@ public class ApiException extends RuntimeException{
                 .error(CustomError.builder()
                         .code("417")
                         .message(message)
-                        .createdAt(LocalDateTime.now())
                         .build())
                 .build();
     }

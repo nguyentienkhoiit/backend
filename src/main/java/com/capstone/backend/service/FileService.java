@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public interface FileService {
-    public List<FileDTOResponse> uploadMultiFile(MultipartFile[] files);
+    public List<FileDTOResponse> uploadMultiFile(MultipartFile[] files, Long lessonId);
 
     public Resource downloadFile(String fileName);
 

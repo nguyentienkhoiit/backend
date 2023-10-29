@@ -45,7 +45,6 @@ public class ApiExceptionHandler {
     public ResponseEntity<CustomError> handleMaxSizeException(MaxUploadSizeExceededException exc) {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(CustomError.builder()
                         .message(messageException.MSG_FILE_TOO_LARGE)
-                        .createdAt(LocalDateTime.now())
                         .code("417")
                 .build());
     }

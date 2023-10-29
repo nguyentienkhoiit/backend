@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/user-resource-permission")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(name = "User Resource Permission", description = "API for User Resource Permission")
+@CrossOrigin
 public class UserResourcePermissionController {
 
 }

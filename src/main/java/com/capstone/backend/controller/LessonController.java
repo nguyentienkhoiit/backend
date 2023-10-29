@@ -1,27 +1,20 @@
 package com.capstone.backend.controller;
+
 import com.capstone.backend.model.dto.PagingDTOResponse;
-import com.capstone.backend.model.dto.chapter.ChapterDTOFilter;
-import com.capstone.backend.model.dto.chapter.ChapterDTORequest;
-import com.capstone.backend.model.dto.chapter.ChapterDTOResponse;
-import com.capstone.backend.model.dto.classes.ClassDTOResponse;
 import com.capstone.backend.model.dto.lesson.LessonDTOFilter;
 import com.capstone.backend.model.dto.lesson.LessonDTORequest;
 import com.capstone.backend.model.dto.lesson.LessonDTOResponse;
 import com.capstone.backend.service.LessonService;
-import com.capstone.backend.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 @RestController
@@ -29,6 +22,7 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @RequestMapping(API_VERSION + "/lesson")
 @Tag(name = "Lesson", description = "API for Lesson")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class LessonController {
     LessonService lessonService;
 

@@ -3,6 +3,9 @@ package com.capstone.backend.service;
 import com.capstone.backend.model.dto.materials.DataMaterialsDTOResponse;
 import com.capstone.backend.model.dto.materials.MaterialsFilterDTORequest;
 import com.capstone.backend.model.dto.resource.*;
+import com.capstone.backend.model.dto.tag.TagSuggestDTORequest;
+import com.capstone.backend.model.dto.tag.TagSuggestDTOResponse;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,5 +21,13 @@ public interface ResourceService {
 
     public DataMaterialsDTOResponse searchMaterials(MaterialsFilterDTORequest request);
 
-//    public ResourceDTOResponse getResourceById(Long id);
+    public Resource downloadResource(String fileName);
+
+    public Boolean shareResource(ResourceSharedDTORequest request);
+
+    public ResourceSharedDTOResponse viewResourceShareById(Long resourceId);
+
+    public List<UserSharedDTOResponse> suggestionUserShare(String text);
+
+    public List<TagSuggestDTOResponse> getListTagsSuggest(TagSuggestDTORequest request);
 }

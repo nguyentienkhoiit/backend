@@ -1,9 +1,9 @@
 package com.capstone.backend.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter

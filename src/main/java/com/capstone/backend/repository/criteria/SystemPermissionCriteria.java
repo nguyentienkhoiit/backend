@@ -6,14 +6,14 @@ import com.capstone.backend.model.dto.systempermission.SystemPermissionDTOFilter
 import com.capstone.backend.model.dto.systempermission.SystemPermissionDTOResponse;
 import com.capstone.backend.model.mapper.SystemPermissionMapper;
 import com.capstone.backend.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,17 +1,15 @@
 package com.capstone.backend.utils;
 
-import com.capstone.backend.entity.User;
 import com.capstone.backend.exception.ApiException;
 import com.capstone.backend.model.dto.EmailInfo;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor

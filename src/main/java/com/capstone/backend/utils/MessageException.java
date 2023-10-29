@@ -139,4 +139,10 @@ public class MessageException {
     @Value("${messages.exception.system-permission-not-found}")
     public String MSG_SYSTEM_PERMISSION_NOT_FOUND;
 
+    @Value("${messages.exception.user-permission-resource-not-found}")
+    public String MSG_PERMISSION_RESOURCE_NOT_FOUND;
+
+    @Value("${messages.exception.user-resource-not-found}")
+    public String MSG_USER_RESOURCE_NOT_FOUND;
+
 }

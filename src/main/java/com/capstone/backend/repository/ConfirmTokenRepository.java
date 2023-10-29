@@ -1,7 +1,6 @@
 package com.capstone.backend.repository;
 
 import com.capstone.backend.entity.ConfirmationToken;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface ConfirmTokenRepository extends JpaRepository<ConfirmationToken, Long> {
-    @Transactional
+
     @Modifying
     @Query("UPDATE ConfirmationToken c " +
             "SET c.confirmedAt = ?2 " +

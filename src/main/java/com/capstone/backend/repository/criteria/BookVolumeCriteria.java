@@ -3,18 +3,17 @@ package com.capstone.backend.repository.criteria;
 
 import com.capstone.backend.entity.BookVolume;
 import com.capstone.backend.model.dto.PagingDTOResponse;
-
 import com.capstone.backend.model.dto.bookvolume.BookVolumeDTOFilter;
 import com.capstone.backend.model.dto.bookvolume.BookVolumeDTOResponse;
 import com.capstone.backend.model.mapper.BookVolumeMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

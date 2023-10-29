@@ -16,6 +16,4 @@ import java.time.LocalDateTime;
 public class CustomError {
     String code;
     String message;
-    @JsonProperty("created_at")
-    LocalDateTime createdAt;
 }

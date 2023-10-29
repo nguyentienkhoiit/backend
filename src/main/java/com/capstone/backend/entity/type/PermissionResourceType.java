@@ -12,4 +12,9 @@ public enum PermissionResourceType {
     R("remove"),
     D("download");
     String content;
+
+    public static String sharePermission() {
+        return PermissionResourceType.V.toString()
+                .concat(PermissionResourceType.D.toString());
+    }
 }

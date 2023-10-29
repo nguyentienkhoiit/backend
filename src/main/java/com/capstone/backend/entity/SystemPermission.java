@@ -1,10 +1,10 @@
 package com.capstone.backend.entity;
 
 import com.capstone.backend.entity.type.MethodType;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 

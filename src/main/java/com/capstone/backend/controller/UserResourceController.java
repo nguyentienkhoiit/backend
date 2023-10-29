@@ -1,26 +1,27 @@
 package com.capstone.backend.controller;
 
+import com.capstone.backend.model.dto.userresource.MyUserResourceDTOFilter;
 import com.capstone.backend.model.dto.userresource.UserResourceRequest;
+import com.capstone.backend.model.dto.userresource.UserResourceSavedOrSharedDTOFilter;
 import com.capstone.backend.service.UserResourceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/user-resource")
 @Tag(name = "User Resource", description = "API for Action With Resource")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class UserResourceController {
     UserResourceService userResourceService;
 
@@ -30,11 +31,36 @@ public class UserResourceController {
         return ResponseEntity.ok(userResourceService.actionResource(request));
     }
 
-    @GetMapping("/download/{filename:.+}")
-    @Operation(summary = "Download a resource")
-    public ResponseEntity<?> downloadResource(@PathVariable(name = "filename", required = true) String fileName) {
-        Resource file = userResourceService.downloadResource(fileName);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    @GetMapping("/display-shared")
+    public ResponseEntity<?> viewSearchUserResourceShared(
+            @ModelAttribute UserResourceSavedOrSharedDTOFilter request
+    ) {
+        return ResponseEntity.ok(userResourceService.viewSearchUserResourceShared(request));
     }
+
+    @DeleteMapping("/display-shared/{id}")
+    public ResponseEntity<?> deleteSharedResource(@PathVariable Long id) {
+        return ResponseEntity.ok(userResourceService.deleteSharedResource(id));
+    }
+
+    @GetMapping("/display-saved")
+    public ResponseEntity<?> viewSearchUserResourceSaved(
+            @ModelAttribute UserResourceSavedOrSharedDTOFilter request
+    ) {
+        return ResponseEntity.ok(userResourceService.viewSearchUserResourceSaved(request));
+    }
+
+    @DeleteMapping("/display-saved/{id}")
+    public ResponseEntity<?> deleteSavedResource(@PathVariable Long id) {
+        return ResponseEntity.ok(userResourceService.deleteSavedResource(id));
+    }
+
+    @GetMapping("/display-my-resource")
+    public ResponseEntity<?> viewSearchMyUserResource(
+            @ModelAttribute MyUserResourceDTOFilter request
+    ) {
+        return ResponseEntity.ok(userResourceService.viewSearchMyUserResource(request));
+    }
+
+
 }

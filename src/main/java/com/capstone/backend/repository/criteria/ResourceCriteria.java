@@ -4,21 +4,21 @@ import com.capstone.backend.entity.Resource;
 import com.capstone.backend.entity.User;
 import com.capstone.backend.entity.type.ActionType;
 import com.capstone.backend.entity.type.TableType;
-import com.capstone.backend.model.dto.resource.*;
+import com.capstone.backend.model.dto.resource.PagingResourceDTOResponse;
+import com.capstone.backend.model.dto.resource.ResourceMediaDTOCriteria;
+import com.capstone.backend.model.dto.resource.ResourceMediaDTOFilter;
+import com.capstone.backend.model.dto.resource.ResourceViewDTOResponse;
 import com.capstone.backend.model.mapper.ResourceMapper;
 import com.capstone.backend.repository.UserResourceRepository;
 import com.capstone.backend.utils.UserHelper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.Table;
-import jakarta.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.query.NativeQuery;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,11 +173,7 @@ public class ResourceCriteria {
         List<ResourceViewDTOResponse> resourceViewDTOResponses = resourceList.stream()
                 .map(resource -> {
                     boolean isSave = userResourceRepository
-                            .findUserResourceByUserIdAndResourceIdAndActionType(
-                                    userLoggedIn.getId(),
-                                    resource.getId(),
-                                    ActionType.SAVED
-                            )
+                            .findUserResourceHasActionType(userLoggedIn.getId(), resource.getId(), ActionType.SAVED)
                             .isPresent();
                     return ResourceMapper.toResourceViewDTOResponse(resource, isSave);
                 })

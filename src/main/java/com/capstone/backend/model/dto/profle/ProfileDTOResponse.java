@@ -1,6 +1,8 @@
 package com.capstone.backend.model.dto.profle;
 
 import com.capstone.backend.model.dto.classes.ClassDTOResponse;
+import com.capstone.backend.model.dto.role.RoleDTODisplay;
+import com.capstone.backend.model.dto.role.RoleDTOResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -31,4 +33,5 @@ public class ProfileDTOResponse {
     String school;
     LocalDateTime createdAt;
     Long classId;
+    List<RoleDTODisplay> roleDTOResponses;
 }

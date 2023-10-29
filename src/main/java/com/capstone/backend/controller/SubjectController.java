@@ -1,36 +1,29 @@
 package com.capstone.backend.controller;
 
 import com.capstone.backend.model.dto.PagingDTOResponse;
-import com.capstone.backend.model.dto.bookseries.BookSeriesDTOFilter;
-import com.capstone.backend.model.dto.bookseries.BookSeriesDTOResponse;
-import com.capstone.backend.model.dto.lesson.LessonDTOResponse;
 import com.capstone.backend.model.dto.subject.SubjectDTOFilter;
 import com.capstone.backend.model.dto.subject.SubjectDTORequest;
 import com.capstone.backend.model.dto.subject.SubjectDTOResponse;
 import com.capstone.backend.service.SubjectService;
-import com.capstone.backend.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + "/subject")
 @Tag(name = "Subject", description = "API for Subject")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class SubjectController {
 
     SubjectService subjectService;

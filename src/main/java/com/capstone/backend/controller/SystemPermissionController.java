@@ -18,6 +18,7 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping(API_VERSION + "/system-permission")
 @Tag(name = "System permission", description = "API for System Permission")
+@CrossOrigin
 public class SystemPermissionController {
     SystemPermissionService systemPermissionService;
 

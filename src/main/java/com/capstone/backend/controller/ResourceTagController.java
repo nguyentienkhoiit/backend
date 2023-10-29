@@ -19,6 +19,7 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping(API_VERSION + "/resource-tags")
 @Tag(name = "Resource-tag", description = "API for Resource's tags")
+@CrossOrigin
 public class ResourceTagController {
     ResourceTagService resourceTagService;
 

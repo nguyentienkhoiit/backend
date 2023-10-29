@@ -7,11 +7,12 @@ import com.capstone.backend.model.dto.tag.TagDTOResponse;
 import com.capstone.backend.service.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static com.capstone.backend.utils.Constants.API_VERSION;
 
@@ -20,6 +21,7 @@ import static com.capstone.backend.utils.Constants.API_VERSION;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping(API_VERSION + "/tags")
 @Tag(name = "Tag", description = "API for Tags")
+@CrossOrigin
 public class TagController {
     TagService tagService;
 

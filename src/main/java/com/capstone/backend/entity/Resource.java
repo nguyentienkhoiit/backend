@@ -5,10 +5,10 @@ import com.capstone.backend.entity.type.ResourceType;
 import com.capstone.backend.entity.type.TabResourceType;
 import com.capstone.backend.entity.type.VisualType;
 import com.capstone.backend.utils.Constants;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 

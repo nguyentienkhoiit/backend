@@ -11,8 +11,11 @@ import com.capstone.backend.model.dto.authentication.AuthenticationDTOResponse;
 import com.capstone.backend.model.dto.register.RegisterDTORequest;
 import com.capstone.backend.model.dto.register.RegisterDTOResponse;
 import com.capstone.backend.model.dto.register.RegisterDTOUpdate;
+import com.capstone.backend.model.dto.role.RoleDTODisplay;
+import com.capstone.backend.model.dto.role.RoleDTOResponse;
 import com.capstone.backend.model.dto.user.UserEmailDTORequest;
 import com.capstone.backend.model.dto.user.UserForgotPasswordDTORequest;
+import com.capstone.backend.model.mapper.RoleMapper;
 import com.capstone.backend.model.mapper.UserMapper;
 import com.capstone.backend.repository.ConfirmTokenRepository;
 import com.capstone.backend.repository.RoleRepository;
@@ -38,6 +41,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static com.capstone.backend.utils.Constants.*;
@@ -67,13 +71,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private AuthenticationDTOResponse buildDTOAuthenticationResponse(User user) {
+    private AuthenticationDTOResponse buildDTOAuthenticationResponse(
+            User user,
+            List<RoleDTODisplay> roleDTOResponses
+    ) {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         Set<UserRole> set = user.getUserRoleList();
         set.forEach(s -> authorities.add(new SimpleGrantedAuthority(s.getRole().getName())));
         var accessToken = jwtService.generateToken(user, authorities);
         return AuthenticationDTOResponse.builder()
                 .accessToken(accessToken)
+                .roleDTOResponses(roleDTOResponses)
                 .build();
     }
 
@@ -84,7 +92,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticate(user.getEmail(), request.getPassword());
         if (!user.getActive())
             throw ApiException.unAuthorizedException(messageException.MSG_USER_UNAUTHORIZED);
-        return buildDTOAuthenticationResponse(user);
+        List<RoleDTODisplay> roleDTOResponses = user.getUserRoleList().stream()
+                .map(role -> RoleMapper.toRoleDTODisplay(role.getRole()))
+                .toList();
+        return buildDTOAuthenticationResponse(user, roleDTOResponses);
     }
 
     public UserRole addRoleToUser(User user, Long roleId) {
